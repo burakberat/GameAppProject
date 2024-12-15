@@ -1,13 +1,9 @@
 ﻿using AutoMapper;
 using GameApp.Infrastructure.Models.Entities;
+using GameApp.Infrastructure.Models.Enums;
 using GameApp.Infrastructure.Repositories.Abstracts;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameApp.Infrastructure.Repositories.Concretes
 {
@@ -15,11 +11,11 @@ namespace GameApp.Infrastructure.Repositories.Concretes
     {
         private readonly DbContext _context;
         private readonly IMapper _mapper;
+
         public BaseRepository(DbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
-
         }
         #region Insert, Update, Delete, SaveChanges, Rollback, Clear
         public void Add<TEntity>(TEntity entity) where TEntity : Entity
@@ -38,7 +34,6 @@ namespace GameApp.Infrastructure.Repositories.Concretes
         {
             await _context.AddRangeAsync(entityList);
         }
-
         public void Update<TEntity>(TEntity entity) where TEntity : Entity
         {
             if (entity == null)
@@ -47,27 +42,17 @@ namespace GameApp.Infrastructure.Repositories.Concretes
             var existing = _context.Set<TEntity>().Find(keys);
             if (existing == null)
                 return;
-
-            //TEntity existing = _context.Set<TEntity>().Find(entity.GetPrimaryKeyValues());
-            //entity.GetType().GetProperties().FirstOrDefault(d => d.Name == "Id").GetValue(entity));
-
             _context.Entry(existing).CurrentValues.SetValues(entity);
-
-
         }
         public async Task UpdateAsync<TEntity>(TEntity entity) where TEntity : Entity
         {
             if (entity == null)
                 return;
-
             var keys = entity.GetPrimaryKeyValues().ToArray();
-
             var existing = await _context.Set<TEntity>().FindAsync(keys);
             if (existing == null)
                 return;
-
             await Task.Run(() => _context.Entry(existing).CurrentValues.SetValues(entity));
-
         }
         public void UpdateRange<TEntity>(IEnumerable<TEntity> entityList) where TEntity : Entity
         {
@@ -77,10 +62,8 @@ namespace GameApp.Infrastructure.Repositories.Concretes
         {
             await Task.Run(() => _context.UpdateRange(entityList));
         }
-
         public void AddOrUpdate<TEntity>(TEntity entity) where TEntity : Entity
         {
-
             var keys = entity.GetPrimaryKeyValues();
             var any = _context.Set<TEntity>().Find(keys);
             if (any == null)
@@ -99,18 +82,14 @@ namespace GameApp.Infrastructure.Repositories.Concretes
                 {
                     _context.Entry(entity).State = EntityState.Modified;
                 }
-
             }
-
         }
         public async Task AddOrUpdateAsync<TEntity>(TEntity entity) where TEntity : Entity
         {
-
             if (entity.LastTransactionDate == DateTime.MinValue)
             {
                 entity.LastTransactionDate = DateTime.Now;
             }
-
             var keys = entity.GetPrimaryKeyValues();
             var any = await _context.Set<TEntity>().FindAsync(keys);
             if (any == null)
@@ -129,11 +108,8 @@ namespace GameApp.Infrastructure.Repositories.Concretes
                 {
                     _context.Entry(entity).State = EntityState.Modified;
                 }
-
             }
         }
-
-
         public void Delete<TEntity>(TEntity entity, bool isSoftDelete = false) where TEntity : Entity
         {
             if (!isSoftDelete)
@@ -152,7 +128,6 @@ namespace GameApp.Infrastructure.Repositories.Concretes
             }
             else await Task.Run(() => _context.Set<TEntity>().Remove(entity));
         }
-
         public void DeleteRange<TEntity>(IEnumerable<TEntity> entityList, bool isSoftDelete = false) where TEntity : Entity
         {
             if (!isSoftDelete)
@@ -177,14 +152,8 @@ namespace GameApp.Infrastructure.Repositories.Concretes
             }
             else await Task.Run(() => _context.Set<TEntity>().RemoveRange(entityList));
         }
-
-
-
-
-
         public int SaveChanges()
         {
-
             try
             {
                 return _context.SaveChanges();
@@ -192,34 +161,28 @@ namespace GameApp.Infrastructure.Repositories.Concretes
             catch (Exception ex)
             {
                 Rollback();
-                throw ex ?? new Exception("SaveChanges işleminde beklenmeye bir hata ile kaşılaşıldı.");
+                throw ex ?? new Exception(Messages.SaveChangesError);
             }
             finally
             {
                 Clear();
             }
         }
-
         public async Task<int> SaveChangesAsync()
         {
-            //return await _context.SaveChangesAsync(default);
-
-
             try
             {
                 return await _context.SaveChangesAsync(default);
             }
             catch (Exception ex)
             {
-                //Rollback();
-                throw ex ?? new Exception("SaveChanges işleminde beklenmeye bir hata ile kaşılaşıldı.");
+                throw ex ?? new Exception(Messages.SaveChangesError);
             }
             finally
             {
                 Clear();
             }
         }
-
         public void Rollback()
         {
             (_context as DbContext).ChangeTracker.Entries().ToList().ForEach(x => x.Reload());
@@ -228,9 +191,6 @@ namespace GameApp.Infrastructure.Repositories.Concretes
         {
             (_context as DbContext).ChangeTracker.Clear();
         }
-
-
-
         #endregion
 
         public virtual async Task<List<T>>? ListAsync<T>(
@@ -239,7 +199,6 @@ namespace GameApp.Infrastructure.Repositories.Concretes
          Func<IQueryable<T>, IQueryable<T>>? includes = null
          ) where T : Entity
         {
-
             IQueryable<T> dbSet = _context.Set<T>();
             if (filter != null)
             {
@@ -254,11 +213,7 @@ namespace GameApp.Infrastructure.Repositories.Concretes
                 dbSet = orderBy(dbSet);
             }
             return await dbSet.ToListAsync();
-
-
         }
-
-
         public async Task<List<TModel>?>? ListProjectAsync<TEntity, TModel>(
           Expression<Func<TEntity, bool>>? filter = null,
           Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
@@ -278,45 +233,32 @@ namespace GameApp.Infrastructure.Repositories.Concretes
             {
                 dbSet = orderBy(dbSet);
             }
-
             var result = _mapper.ProjectTo<TModel>(dbSet);
-
-
             if (result == null)
                 return null;
-
             return await result.ToListAsync();
         }
-
         public async Task<TModel>? GetProjectAsync<TEntity, TModel>(
-       Expression<Func<TEntity, bool>>? filter = null
-       ) where TEntity : Entity
+            Expression<Func<TEntity, bool>>? filter = null) where TEntity : Entity
         {
             IQueryable<TEntity> dbSet = _context.Set<TEntity>();
             if (filter != null)
             {
                 dbSet = dbSet.Where(filter);
             }
-
             var result = _mapper.ProjectTo<TModel>(dbSet);
-
             return await result.FirstOrDefaultAsync();
         }
-
         public async Task<TEntity>? GetAsync<TEntity>(
-      Expression<Func<TEntity, bool>>? filter = null
-      ) where TEntity : Entity
+            Expression<Func<TEntity, bool>>? filter = null) where TEntity : Entity
         {
             IQueryable<TEntity> dbSet = _context.Set<TEntity>();
             if (filter != null)
             {
                 dbSet = dbSet.Where(filter);
             }
-
             return await dbSet.FirstOrDefaultAsync();
         }
-
-
         public async Task<TEntity>? GetFromSqlAsync<TEntity>(string sqlQuery) where TEntity : Entity
         {
             var dbSet = _context.Set<TEntity>();
@@ -334,9 +276,7 @@ namespace GameApp.Infrastructure.Repositories.Concretes
             {
                 dbSet.FromSqlRaw(sqlQuery);
             }
-
             return await dbSet.ToListAsync();
         }
-
     }
 }

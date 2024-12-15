@@ -15,6 +15,10 @@ namespace GameApp.Model.Profiles
         {
             CreateMap<Games, GameListDto>()
                 .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name));
+            CreateMap<Games, GameDetailDto>()
+                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name));
+            CreateMap<Games, GameFormDto>().ReverseMap();
+
             CreateMap<User, UserDto>();
         }
     }

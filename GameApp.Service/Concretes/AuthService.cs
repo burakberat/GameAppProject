@@ -5,15 +5,10 @@ using GameApp.Model.Entities;
 using GameApp.Repository.Abstracts;
 using GameApp.Service.Abstracts;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace GameApp.Service.Concretes
 {
@@ -31,19 +26,22 @@ namespace GameApp.Service.Concretes
         public async Task<ResultDto<string>> LoginAsync(LoginDto item)
         {
             JwtDto jwtDto = new JwtDto();
-            var userDto = await _gameRepository.GetProjectAsync<User, UserDto>(d => d.EPosta == item.EPosta);
-            userDto.Roles = new List<string>();
-            userDto.Roles.Add("admin");
-            if (userDto is null)
+
+            var userdto = await _gameRepository.GetProjectAsync<User, UserDto>(d => d.EPosta == item.EPosta);
+
+            if (userdto is null)
             {
                 return ResultDto<string>.Error(Messages.UserNotFound);
             }
 
-            var token = CreateToken(userDto);
+            userdto.Roles = new List<string>();
+            userdto.Roles.Add("admin");
+
+            var token = CreateToken(userdto);
+
             jwtDto.Token = token;
 
             return ResultDto<string>.Success(token);
-
         }
 
         private string CreateToken(UserDto user)

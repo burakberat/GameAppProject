@@ -25,7 +25,7 @@ namespace GameApp.Api.Controllers
             {
                 return Ok(ResultDto<JwtDto>.Error(Messages.ModelNotValid));
             }
-            var result = _authService.LoginAsync(loginDto);
+            var result = await _authService.LoginAsync(loginDto);
             return Ok(result);
         }
     }
