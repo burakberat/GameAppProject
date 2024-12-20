@@ -1,8 +1,6 @@
-using Castle.DynamicProxy;
 using GameApp.Infrastructure.API.Middlewares;
 using GameApp.Infrastructure.Cache;
 using GameApp.Infrastructure.Extensions;
-using GameApp.Infrastructure.Interceptors;
 using GameApp.Infrastructure.Models.Dtos;
 using GameApp.Model.Profiles;
 using GameApp.Repository.Abstracts;
@@ -12,13 +10,11 @@ using GameApp.Service.Abstracts;
 using GameApp.Service.Concretes;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using System.Transactions;
 
-//var proxyGenetor = new ProxyGenerator();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -95,7 +91,6 @@ builder.Services.AddDbContext<GameAppDbContext>(options =>
 builder.Services.AddLogCollection(builder.Configuration.GetConnectionString("LogDbConnection"));
 #endregion
 
-builder.Services.AddTransient<CachingInterceptor>();
 builder.Services.AddInMemoryCache();
 
 builder.Services.AddAutoMapper(typeof(GameAppProfile));
@@ -104,7 +99,6 @@ builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
-//builder.Services.AddProxiedServices(proxyGenetor);
 
 TransactionManager.ImplicitDistributedTransactions = true;
 

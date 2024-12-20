@@ -15,7 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Attributes\" />
     <Folder Include="Exceptions\" />
+    <Folder Include="Interceptors\" />
   </ItemGroup>
 
 </Project>

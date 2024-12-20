@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using GameApp.Infrastructure.Attributes;
 using GameApp.Infrastructure.Cache;
 using GameApp.Infrastructure.Models.Dtos;
 using GameApp.Model.Dtos;
@@ -38,10 +37,14 @@ namespace GameApp.Service.Concretes
             return ResultDto<GameDetailDto>.Success(data);
         }
 
-        [Cache("GameList", 3000)]
         public async Task<ResultDto<List<GameListDto>>> GetGamesAsync()
         {
-            var data = await _gameRepository.ListProjectAsync<Games, GameListDto>(d => d.StatusId != 0);
+            var data = await _cacheService.GetObjectAsync<List<GameListDto>>("GameList");
+            if (data == null)
+            {
+                data = await _gameRepository.ListProjectAsync<Games, GameListDto>(d => d.StatusId != 0);
+                await _cacheService.SetObjectAsync("GameList", data, 60);
+            }
             return ResultDto<List<GameListDto>>.Success(data);
         }
     }
