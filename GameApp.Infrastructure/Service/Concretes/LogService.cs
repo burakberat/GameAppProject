@@ -20,7 +20,6 @@ namespace GameApp.Infrastructure.Service.Concretes
         }
         public async Task AddErrorLogAsync(ErrorLogTable log)
         {
-
             await _repository.AddAsync(log);
             await _repository.SaveChangesAsync();
         }

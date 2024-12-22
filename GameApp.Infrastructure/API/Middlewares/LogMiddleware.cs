@@ -87,6 +87,7 @@ namespace GameApp.Infrastructure.API.Middlewares
 
                     memoryStreamResponseBody.Position = 0;
                     await memoryStreamResponseBody.CopyToAsync(originalBodyStream);
+
                 }
 
             }

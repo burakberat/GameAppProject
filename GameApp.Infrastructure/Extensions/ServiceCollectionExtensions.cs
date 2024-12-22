@@ -1,4 +1,5 @@
-﻿using GameApp.Infrastructure.Repositories.Abstracts;
+﻿using GameApp.Infrastructure.Hashing;
+using GameApp.Infrastructure.Repositories.Abstracts;
 using GameApp.Infrastructure.Repositories.Concretes;
 using GameApp.Infrastructure.Repositories.Context;
 using GameApp.Infrastructure.Service.Abstracts;
@@ -21,6 +22,12 @@ namespace GameApp.Infrastructure.Extensions
             services.AddScoped<ILogService, LogService>();
 
             return services;
-        }        
+        }
+        public static IServiceCollection AddHasherCollection(this IServiceCollection services)
+        {
+            services.AddScoped<IPasswordHasher, PasswordHasher>();
+
+            return services;
+        }
     }
 }

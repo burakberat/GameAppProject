@@ -18,6 +18,7 @@ namespace GameApp.Repository.Contexts
         public DbSet<Categories> Categories { get; set; }
         public DbSet<Role> Role { get; set; }
         public DbSet<User> User { get; set; }
+        public DbSet<UserRoles> UserRoles { get; set; }
         public DbSet<Designation> Designation { get; set; }
     }
 }

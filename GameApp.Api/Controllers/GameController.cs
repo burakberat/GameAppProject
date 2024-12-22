@@ -1,6 +1,5 @@
 ﻿using GameApp.Model.Dtos;
 using GameApp.Service.Abstracts;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameApp.Api.Controllers

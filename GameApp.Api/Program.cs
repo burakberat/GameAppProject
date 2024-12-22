@@ -1,11 +1,14 @@
 using GameApp.Infrastructure.API.Middlewares;
 using GameApp.Infrastructure.Cache;
 using GameApp.Infrastructure.Extensions;
+using GameApp.Infrastructure.Hashing;
 using GameApp.Infrastructure.Models.Dtos;
 using GameApp.Model.Profiles;
 using GameApp.Repository.Abstracts;
 using GameApp.Repository.Concretes;
 using GameApp.Repository.Contexts;
+using GameApp.Repository.Repositories.Abstracts;
+using GameApp.Repository.Repositories.Concretes;
 using GameApp.Service.Abstracts;
 using GameApp.Service.Concretes;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -91,12 +94,16 @@ builder.Services.AddDbContext<GameAppDbContext>(options =>
 builder.Services.AddLogCollection(builder.Configuration.GetConnectionString("LogDbConnection"));
 #endregion
 
+builder.Services.AddHasherCollection();
+
 builder.Services.AddInMemoryCache();
 
 builder.Services.AddAutoMapper(typeof(GameAppProfile));
 
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<IGameService, GameService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 

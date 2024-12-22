@@ -28,6 +28,7 @@ namespace GameApp.Service.Concretes
             JwtDto jwtDto = new JwtDto();
 
             var userdto = await _gameRepository.GetProjectAsync<User, UserDto>(d => d.EPosta == item.EPosta);
+            //var userRoleDto = await _gameRepository.GetAsync<UserRoles>(d => d.UserId == userdto.Id);
 
             if (userdto is null)
             {
