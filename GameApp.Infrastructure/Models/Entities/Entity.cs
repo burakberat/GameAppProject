@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameApp.Infrastructure.Models.Entities
 {
@@ -16,9 +11,9 @@ namespace GameApp.Infrastructure.Models.Entities
             LastTransactionDate = DateTime.Now;
         }
 
-        public byte StatusId { get; set; }
+        public virtual byte StatusId { get; set; }
 
-        public DateTime LastTransactionDate { get; set; }
+        public virtual DateTime LastTransactionDate { get; set; }
 
         public object Clone()
         {

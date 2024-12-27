@@ -14,7 +14,17 @@ namespace GameApp.Infrastructure.Hashing
             byte[] salt = RandomNumberGenerator.GetBytes(Saltsize);
             byte[] hash = Rfc2898DeriveBytes.Pbkdf2(password, salt, Iterations, algorithmName, Hashsize);
 
-            return $"{Convert.ToBase64String(salt)}.{Convert.ToBase64String(hash)}";
+            return $"{Convert.ToHexString(hash)}-{Convert.ToHexString(salt)}";
+        }
+
+        public bool Verify(string password, string passwordHash)
+        {
+            string[] parts = passwordHash.Split('-');
+            byte[] hash = Convert.FromHexString(parts[0]);
+            byte[] salt = Convert.FromHexString(parts[1]);
+            byte[] inputHash = Rfc2898DeriveBytes.Pbkdf2(password, salt, Iterations, algorithmName, Hashsize);
+
+            return CryptographicOperations.FixedTimeEquals(hash, inputHash);
         }
     }
 }

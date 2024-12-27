@@ -129,7 +129,7 @@ namespace GameApp.Infrastructure.API.Middlewares
                 UserId = userId,
                 RequestPath = context.Request.Path,
                 RequestBody = requestBody,
-                ResponseBody = responseText,
+                ResponseBody = JsonSerializer.Serialize(ResultDto<NoContent>.Error($"Message : {clientMesaj}", null)),
                 ApplicationId = 1,
                 LogMessage = erorMessage,
                 ErrorCode = context.Response.StatusCode,

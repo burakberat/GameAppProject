@@ -1,10 +1,7 @@
-﻿using System.Text.Json.Serialization;
-
-namespace GameApp.Model.Dtos
+﻿namespace GameApp.Model.Dtos.PersonnelDtos
 {
-    public class UserDto
+    public class PersonnelDto : BaseDto
     {
-        [JsonIgnore]
         public int Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }

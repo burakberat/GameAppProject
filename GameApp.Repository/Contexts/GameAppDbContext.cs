@@ -1,14 +1,13 @@
-﻿using GameApp.Model.Entities;
+﻿using GameApp.Model.Dtos.PersonnelDtos;
+using GameApp.Model.Dtos.UserDtos;
+using GameApp.Model.Entities;
+using GameApp.Model.Entities.PersonnelEntities;
+using GameApp.Model.Entities.UserEntities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameApp.Repository.Contexts
 {
-    public class GameAppDbContext: DbContext
+    public class GameAppDbContext : DbContext
     {
         public GameAppDbContext(DbContextOptions<GameAppDbContext> options) : base(options)
         {
@@ -16,9 +15,18 @@ namespace GameApp.Repository.Contexts
 
         public DbSet<Games> Games { get; set; }
         public DbSet<Categories> Categories { get; set; }
-        public DbSet<Role> Role { get; set; }
+
+        //User
         public DbSet<User> User { get; set; }
+        public DbSet<UserRole> UserRole { get; set; }        
         public DbSet<UserRoles> UserRoles { get; set; }
-        public DbSet<Designation> Designation { get; set; }
+        public DbSet<UserDetailDto> UserDetailDtos { get; set; }
+
+        //Personnel
+        public DbSet<Personnel> Personnel { get; set; }
+        public DbSet<PersonnelRole> PersonnelRole { get; set; }
+        public DbSet<PersonnelRoles> PersonnelRoles { get; set; }
+        public DbSet<PersonnelDetailDto> PersonnelDetailDtos { get; set; }
+
     }
 }

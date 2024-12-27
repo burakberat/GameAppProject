@@ -18,9 +18,9 @@ namespace GameApp.Infrastructure.Models.Entities
         [Key]
         [Column(Order = 0)]
         public TKey Id { get; set; }
-        public byte StatusId { get; set; }
+        public override byte StatusId { get; set; }
 
-        public DateTime LastTransactionDate { get; set; }
+        public override DateTime LastTransactionDate { get; set; }
 
     }
     public abstract class BaseEntity : BaseEntity<int>

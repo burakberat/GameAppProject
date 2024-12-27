@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameApp.Model.Entities
+namespace GameApp.Model.Entities.PersonnelEntities
 {
-    public class Designation: BaseEntity
+    public class PersonnelRole : BaseEntity<short>
     {
-        public string Name { get; set; }
+        public string RoleName { get; set; }
     }
 }

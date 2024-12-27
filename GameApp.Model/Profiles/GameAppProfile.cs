@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
 using GameApp.Model.Dtos;
+using GameApp.Model.Dtos.UserDtos;
 using GameApp.Model.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using GameApp.Model.Entities.UserEntities;
 
 namespace GameApp.Model.Profiles
 {
@@ -17,12 +14,7 @@ namespace GameApp.Model.Profiles
                 .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name));
             CreateMap<Games, GameDetailDto>()
                 .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name));
-            CreateMap<Games, GameFormDto>().ReverseMap();
-
-            CreateMap<User, UserDto>()
-                .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.PasswordHash)).ReverseMap();
-            CreateMap<User, UserRegisterDto>()
-                .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.PasswordHash)).ReverseMap();
+            CreateMap<Games, GameFormDto>().ReverseMap();            
         }
     }
 }

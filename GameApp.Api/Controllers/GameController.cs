@@ -1,10 +1,11 @@
 ﻿using GameApp.Model.Dtos;
 using GameApp.Service.Abstracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameApp.Api.Controllers
 {
-    //[Authorize(Roles = "admin")]
+    //[Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class GameController : ControllerBase

@@ -24,10 +24,10 @@ namespace GameApp.Infrastructure.Repositories.Abstracts
         void AddOrUpdate<TEntity>(TEntity entity) where TEntity : Entity;
         Task AddOrUpdateAsync<TEntity>(TEntity entity) where TEntity : Entity;
 
-
         void Delete<TEntity>(TEntity entity, bool isSoftDelete = false) where TEntity : Entity;
+        Task DeleteAsync<TEntity>(TEntity entity, bool isSoftDelete = false) where TEntity : Entity;
         void DeleteRange<TEntity>(IEnumerable<TEntity> entityList, bool isSoftDelete = false) where TEntity : Entity;
-
+        Task DeleteRangeAsync<TEntity>(IEnumerable<TEntity> entityList, bool isSoftDelete = false) where TEntity : Entity;
 
         int SaveChanges();
         Task<int> SaveChangesAsync();

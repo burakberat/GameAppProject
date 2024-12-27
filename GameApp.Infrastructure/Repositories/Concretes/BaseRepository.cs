@@ -53,6 +53,7 @@ namespace GameApp.Infrastructure.Repositories.Concretes
             if (existing == null)
                 return;
             await Task.Run(() => _context.Entry(existing).CurrentValues.SetValues(entity));
+            
         }
         public void UpdateRange<TEntity>(IEnumerable<TEntity> entityList) where TEntity : Entity
         {

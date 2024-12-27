@@ -5,12 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameApp.Model.Entities
+namespace GameApp.Model.Entities.PersonnelEntities
 {
-    public class UserRoles: BaseEntity
+    public class PersonnelRoles : BaseEntity<int>
     {
-        public int Id { get; set; }
         public int UserId { get; set; }
-        public int RoleId { get; set; }
+        public Int16 RoleId { get; set; }
     }
 }

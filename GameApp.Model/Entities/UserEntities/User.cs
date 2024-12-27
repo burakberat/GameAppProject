@@ -1,8 +1,8 @@
 ﻿using GameApp.Infrastructure.Models.Entities;
 
-namespace GameApp.Model.Entities
+namespace GameApp.Model.Entities.UserEntities
 {
-    public class User : BaseEntity
+    public class User : BaseEntity<int>
     {
         public string Name { get; set; }
         public string Surname { get; set; }
